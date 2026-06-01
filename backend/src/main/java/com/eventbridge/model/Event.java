@@ -70,4 +70,8 @@ public class Event {
             entryFee = 0.0;
         }
     }
+
+    public Double getEntryFee() {
+        return entryFee == null ? 0.0 : entryFee;
+    }
 }
