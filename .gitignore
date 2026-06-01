@@ -1,2 +1,45 @@
+<<<<<<< HEAD
 node_modules/ 
 frontend/node_modules/ 
+=======
+# ============================================================
+#  Event Bridge - .gitignore
+# ============================================================
+
+# ----- SENSITIVE CONFIG (never commit real credentials) -----
+backend/src/main/resources/application.properties
+
+# ----- Java / Maven -----
+target/
+*.class
+*.jar
+*.war
+*.ear
+*.log
+.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+# ----- Node / React -----
+node_modules/
+frontend/dist/
+frontend/build/
+frontend/.env
+frontend/.env.local
+frontend/.env.*.local
+
+# ----- IDE -----
+.idea/
+*.iml
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# ----- OS -----
+.DS_Store
+Thumbs.db
+desktop.ini
+>>>>>>> dc4577ec135a0f35a4d5af0ab9b1e0b324320ea7
