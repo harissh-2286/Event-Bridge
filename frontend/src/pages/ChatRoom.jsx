@@ -53,7 +53,8 @@ const ChatRoom = () => {
 
   const connectWebSocket = (username) => {
     try {
-      const socket = new SockJS('/ws');
+      const wsBase = import.meta.env.VITE_API_BASE_URL || '';
+      const socket = new SockJS(`${wsBase}/ws`);
       const stompClient = Stomp.over(socket);
       
       // Mute console logging for STOMP to keep it clean

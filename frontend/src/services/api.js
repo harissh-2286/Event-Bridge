@@ -1,8 +1,14 @@
 import axios from 'axios';
 
 // Create axios instance
+// In production: VITE_API_BASE_URL = https://your-app.onrender.com
+// In development: falls back to '/api' which Vite proxies to localhost:8080
+const BASE_URL = import.meta.env.VITE_API_BASE_URL
+  ? `${import.meta.env.VITE_API_BASE_URL}/api`
+  : '/api';
+
 const api = axios.create({
-  baseURL: '/api',
+  baseURL: BASE_URL,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -157,7 +163,7 @@ export const odService = {
   },
   downloadPdfUrl: (odId) => {
     const token = localStorage.getItem('token');
-    return `/api/od/download/${odId}?access_token=${token}`;
+    return `${BASE_URL}/od/download/${odId}?access_token=${token}`;
   },
   downloadPdf: async (odId) => {
     const response = await api.get(`/od/download/${odId}`, {
