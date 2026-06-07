@@ -19,6 +19,13 @@ const EventDetails = () => {
   });
   const [regMsg, setRegMsg] = useState({ type: '', text: '' });
 
+  const getErrMsg = (err, fallback = 'An error occurred.') => {
+    const data = err?.response?.data;
+    if (!data) return err?.message || fallback;
+    if (typeof data === 'string') return data;
+    return data.message || data.error || fallback;
+  };
+
   const fetchEventDetails = async () => {
     try {
       const data = await eventService.getById(id);
@@ -56,7 +63,7 @@ const EventDetails = () => {
       alert("Registration successful! Confirmation email sent.");
       fetchEventDetails();
     } catch (err) {
-      alert("Failed to register: " + (err.response?.data || err.message));
+      alert("Failed to register: " + getErrMsg(err, err.message));
     }
   };
 
@@ -78,7 +85,7 @@ const EventDetails = () => {
       setShowTeamModal(false);
       fetchEventDetails();
     } catch (err) {
-      setRegMsg({ type: 'danger', text: err.response?.data || "Failed to register team." });
+      setRegMsg({ type: 'danger', text: getErrMsg(err, 'Failed to register team.') });
     }
   };
 

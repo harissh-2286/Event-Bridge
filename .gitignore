@@ -1,13 +1,9 @@
-<<<<<<< HEAD
-node_modules/ 
-frontend/node_modules/ 
-=======
 # ============================================================
 #  Event Bridge - .gitignore
 # ============================================================
 
 # ----- SENSITIVE CONFIG (never commit real credentials) -----
-backend/src/main/resources/application.properties
+# backend/src/main/resources/application.properties
 
 # ----- Java / Maven -----
 target/
@@ -42,4 +38,3 @@ frontend/.env.*.local
 .DS_Store
 Thumbs.db
 desktop.ini
->>>>>>> dc4577ec135a0f35a4d5af0ab9b1e0b324320ea7

@@ -55,7 +55,7 @@ const ParticipantDashboard = () => {
         }, 1200);
       } catch (err) {
         setPaymentLoading(false);
-        alert(err.response?.data || "Payment failed. Please try again.");
+        alert(getErrMsg(err, 'Payment failed. Please try again.'));
       }
     }, 1800);
   };
@@ -87,6 +87,13 @@ const ParticipantDashboard = () => {
     fetchData();
   }, []);
 
+  const getErrMsg = (err, fallback = 'An error occurred.') => {
+    const data = err?.response?.data;
+    if (!data) return err?.message || fallback;
+    if (typeof data === 'string') return data;
+    return data.message || data.error || fallback;
+  };
+
   const handleRegisterIndividual = async (eventId) => {
     setMsg({ type: '', text: '' });
     try {
@@ -95,7 +102,7 @@ const ParticipantDashboard = () => {
       fetchData();
       setActiveTab('my-registrations');
     } catch (err) {
-      alert(err.response?.data || "Failed to register");
+      alert(getErrMsg(err, 'Failed to register'));
     }
   };
 
@@ -119,7 +126,7 @@ const ParticipantDashboard = () => {
       fetchData();
       setActiveTab('my-registrations');
     } catch (err) {
-      setMsg({ type: 'danger', text: err.response?.data || 'Failed to register team. Check member usernames.' });
+      setMsg({ type: 'danger', text: getErrMsg(err, 'Failed to register team. Check member usernames.') });
     }
   };
 
@@ -129,7 +136,7 @@ const ParticipantDashboard = () => {
         await registrationService.cancel(regId);
         fetchData();
       } catch (err) {
-        alert(err.response?.data || "Failed to cancel");
+        alert(getErrMsg(err, 'Failed to cancel'));
       }
     }
   };
@@ -162,7 +169,7 @@ const ParticipantDashboard = () => {
       localStorage.setItem('user', JSON.stringify(user));
       fetchData();
     } catch (err) {
-      setMsg({ type: 'danger', text: err.response?.data || 'Failed to update profile.' });
+      setMsg({ type: 'danger', text: getErrMsg(err, 'Failed to update profile.') });
     }
   };
 

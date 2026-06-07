@@ -63,6 +63,8 @@ public class SecurityConfig {
                     .requestMatchers("/ws/**").permitAll()
                     .requestMatchers("/api/public/**").permitAll()
                     .requestMatchers("/api/events/banner/**").permitAll()
+                    .requestMatchers(org.springframework.http.HttpMethod.GET, "/api/events/**").permitAll()
+                    .requestMatchers(org.springframework.http.HttpMethod.GET, "/api/announcements/**").permitAll()
                     .requestMatchers("/error").permitAll()
                     .anyRequest().authenticated()
             );
