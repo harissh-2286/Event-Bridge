@@ -7,6 +7,7 @@
 
 # ----- Java / Maven -----
 target/
+backend/target/
 *.class
 *.jar
 *.war
@@ -18,6 +19,7 @@ target/
 
 # ----- Node / React -----
 node_modules/
+frontend/node_modules/
 frontend/dist/
 frontend/build/
 frontend/.env
