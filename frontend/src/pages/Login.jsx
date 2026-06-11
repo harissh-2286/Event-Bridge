@@ -8,14 +8,21 @@ const Login = ({ onLogin }) => {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [slowWarning, setSlowWarning] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError('');
+    setSlowWarning(false);
+
+    // Show a warning after 6 s — the Render free-tier backend can take
+    // up to 50 s to wake up after being idle.
+    const slowTimer = setTimeout(() => setSlowWarning(true), 6000);
 
     try {
       const data = await authService.login(username, password);
+      clearTimeout(slowTimer);
       if (onLogin) onLogin();
       
       // Navigate to respective dashboard
@@ -29,6 +36,8 @@ const Login = ({ onLogin }) => {
     } catch (err) {
       setError(err.response?.data || 'Invalid username or password.');
     } finally {
+      clearTimeout(slowTimer);
+      setSlowWarning(false);
       setLoading(false);
     }
   };
@@ -48,6 +57,15 @@ const Login = ({ onLogin }) => {
               <div className="alert alert-danger d-flex align-items-center gap-2 py-2" role="alert">
                 <i className="fa-solid fa-triangle-exclamation"></i>
                 <div className="small">{error}</div>
+              </div>
+            )}
+
+            {slowWarning && !error && (
+              <div className="alert alert-warning d-flex align-items-center gap-2 py-2">
+                <span className="spinner-border spinner-border-sm flex-shrink-0" role="status" />
+                <div className="small">
+                  <strong>Server is waking up</strong> — please wait up to 30 seconds.
+                </div>
               </div>
             )}
 

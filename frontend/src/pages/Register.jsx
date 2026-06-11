@@ -18,6 +18,7 @@ const Register = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
+  const [slowWarning, setSlowWarning] = useState(false);
 
   const handleChange = (e) => {
     setFormData({
@@ -32,6 +33,7 @@ const Register = () => {
     setLoading(true);
     setError('');
     setSuccess(false);
+    setSlowWarning(false);
 
     if (
       formData.role === 'PARTICIPANT' &&
@@ -42,9 +44,15 @@ const Register = () => {
       return;
     }
 
+    // Show a warning after 6 s — the Render free-tier backend can take
+    // up to 50 s to wake up after being idle.
+    const slowTimer = setTimeout(() => setSlowWarning(true), 6000);
+
     try {
       await authService.register(formData);
 
+      clearTimeout(slowTimer);
+      setSlowWarning(false);
       setSuccess(true);
 
       setTimeout(() => {
@@ -65,6 +73,8 @@ const Register = () => {
       setError(message);
 
     } finally {
+      clearTimeout(slowTimer);
+      setSlowWarning(false);
       setLoading(false);
     }
   };
@@ -93,6 +103,15 @@ const Register = () => {
             {success && (
               <div className="alert alert-success">
                 Registration successful! Redirecting...
+              </div>
+            )}
+
+            {slowWarning && !error && !success && (
+              <div className="alert alert-warning d-flex align-items-center gap-2">
+                <span className="spinner-border spinner-border-sm flex-shrink-0" role="status" />
+                <span>
+                  <strong>Server is waking up</strong> — this can take up to 30 seconds on the free tier. Please wait, your request is being processed.
+                </span>
               </div>
             )}
 

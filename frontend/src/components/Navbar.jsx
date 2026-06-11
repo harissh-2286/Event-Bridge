@@ -46,8 +46,10 @@ const Navbar = ({ onLogout }) => {
     }
   };
 
-  const handleLogout = async () => {
-    await authService.logout();
+  const handleLogout = () => {
+    // authService.logout() now clears localStorage immediately and
+    // pings the server in the background — no await needed here.
+    authService.logout();
     if (onLogout) onLogout();
     navigate('/login');
   };

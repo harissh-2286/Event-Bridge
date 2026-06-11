@@ -43,13 +43,13 @@ export const authService = {
     return response.data;
   },
   logout: async () => {
-    try {
-      await api.post('/auth/logout');
-    } catch (e) {
-      // Ignore if session is already expired
-    }
+    // Clear session data immediately — do NOT wait for server response.
+    // Render free-tier backend can take 50 s+ to wake up, which would
+    // freeze the UI if we awaited here.
     localStorage.removeItem('token');
     localStorage.removeItem('user');
+    // Fire-and-forget: update online status on server in background.
+    api.post('/auth/logout').catch(() => {});
   },
   getCurrentProfile: async () => {
     const response = await api.get('/auth/profile');
