@@ -2,6 +2,7 @@ package com.eventbridge.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.LocalDateTime;
 
 @Entity
@@ -22,6 +23,7 @@ public class Notification {
     @Column(nullable = false, columnDefinition = "TEXT")
     private String message;
 
+    @JsonProperty("isRead")
     @Column(name = "is_read", nullable = false)
     private Boolean isRead = false;
 

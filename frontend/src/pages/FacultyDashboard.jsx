@@ -58,7 +58,8 @@ const FacultyDashboard = () => {
       await odService.updateStatus(odId, status);
       fetchData();
     } catch (err) {
-      alert(err.response?.data || "Failed to update OD status");
+      const d = err.response?.data;
+      alert((typeof d === 'string' ? d : d?.message || d?.error) || 'Failed to update OD status');
     }
   };
 
@@ -74,7 +75,8 @@ const FacultyDashboard = () => {
       setAnnForm({ eventId: '', title: '', content: '' });
       fetchData();
     } catch (err) {
-      setAnnMsg({ type: 'danger', text: err.response?.data || 'Failed to post announcement.' });
+      const d = err.response?.data;
+      setAnnMsg({ type: 'danger', text: (typeof d === 'string' ? d : d?.message || d?.error) || 'Failed to post announcement.' });
     }
   };
 

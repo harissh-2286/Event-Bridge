@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import SockJS from 'sockjs-client';
-import Stomp from 'stompjs';
+import * as Stomp from 'stompjs';
 import { chatService, authService } from '../services/api';
 
 const ChatRoom = () => {
@@ -51,7 +51,8 @@ const ChatRoom = () => {
     }
   };
 
-  const connectWebSocket = (username) => {
+  const connectWebSocket = (username, retryCount = 0) => {
+    const MAX_RETRIES = 5;
     try {
       const wsBase = import.meta.env.VITE_API_BASE_URL || '';
       const socket = new SockJS(`${wsBase}/ws`);
@@ -79,8 +80,12 @@ const ChatRoom = () => {
           });
         });
       }, (err) => {
-        console.warn("WebSocket connection lost. Retrying in 5s...", err);
-        setTimeout(() => connectWebSocket(username), 5000);
+        if (retryCount < MAX_RETRIES) {
+          console.warn(`WebSocket connection lost. Retrying (${retryCount + 1}/${MAX_RETRIES}) in 5s...`, err);
+          setTimeout(() => connectWebSocket(username, retryCount + 1), 5000);
+        } else {
+          console.error("WebSocket: max retries reached. Real-time chat unavailable.");
+        }
       });
     } catch (e) {
       console.error("Error setting up socket client:", e);

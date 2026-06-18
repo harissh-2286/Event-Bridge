@@ -45,7 +45,8 @@ const AdminDashboard = () => {
         await adminService.deleteUser(userId);
         fetchData();
       } catch (err) {
-        alert(err.response?.data || "Failed to delete user.");
+        const d = err.response?.data;
+        alert((typeof d === 'string' ? d : d?.message || d?.error) || 'Failed to delete user.');
       }
     }
   };
@@ -56,7 +57,8 @@ const AdminDashboard = () => {
         await eventService.cancel(eventId);
         fetchData();
       } catch (err) {
-        alert(err.response?.data || "Failed to cancel event.");
+        const d = err.response?.data;
+        alert((typeof d === 'string' ? d : d?.message || d?.error) || 'Failed to cancel event.');
       }
     }
   };
@@ -67,7 +69,8 @@ const AdminDashboard = () => {
         await announcementService.delete(annId);
         fetchData();
       } catch (err) {
-        alert(err.response?.data || "Failed to delete announcement.");
+        const d = err.response?.data;
+        alert((typeof d === 'string' ? d : d?.message || d?.error) || 'Failed to delete announcement.');
       }
     }
   };

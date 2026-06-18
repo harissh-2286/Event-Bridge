@@ -34,7 +34,13 @@ const Login = ({ onLogin }) => {
         default: navigate('/');
       }
     } catch (err) {
-      setError(err.response?.data || 'Invalid username or password.');
+      const errData = err.response?.data;
+      const message =
+        (typeof errData === 'string' ? errData : null) ||
+        errData?.message ||
+        errData?.error ||
+        'Invalid username or password.';
+      setError(message);
     } finally {
       clearTimeout(slowTimer);
       setSlowWarning(false);

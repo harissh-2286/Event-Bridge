@@ -92,7 +92,8 @@ const OrganizerDashboard = () => {
       fetchData();
       setActiveTab('my-events');
     } catch (err) {
-      setFormMsg({ type: 'danger', text: err.response?.data || 'Failed to create event.' });
+      const d = err.response?.data;
+      setFormMsg({ type: 'danger', text: (typeof d === 'string' ? d : d?.message || d?.error) || 'Failed to create event.' });
     }
   };
 
@@ -102,7 +103,8 @@ const OrganizerDashboard = () => {
         await eventService.cancel(id);
         fetchData();
       } catch (err) {
-        alert(err.response?.data || "Failed to cancel event");
+        const d = err.response?.data;
+        alert((typeof d === 'string' ? d : d?.message || d?.error) || 'Failed to cancel event');
       }
     }
   };
@@ -112,7 +114,8 @@ const OrganizerDashboard = () => {
       await registrationService.updateStatus(regId, status);
       fetchData();
     } catch (err) {
-      alert("Failed to update status: " + (err.response?.data || err.message));
+      const d = err.response?.data;
+      alert("Failed to update status: " + ((typeof d === 'string' ? d : d?.message || d?.error) || err.message));
     }
   };
 
@@ -122,7 +125,8 @@ const OrganizerDashboard = () => {
       await registrationService.updatePaymentStatus(regId, nextStatus);
       fetchData();
     } catch (err) {
-      alert("Failed to update payment status: " + (err.response?.data || err.message));
+      const d = err.response?.data;
+      alert("Failed to update payment status: " + ((typeof d === 'string' ? d : d?.message || d?.error) || err.message));
     }
   };
 
@@ -138,7 +142,8 @@ const OrganizerDashboard = () => {
       setAnnForm({ eventId: '', title: '', content: '' });
       fetchData();
     } catch (err) {
-      setFormMsg({ type: 'danger', text: err.response?.data || 'Failed to publish announcement.' });
+      const d = err.response?.data;
+      setFormMsg({ type: 'danger', text: (typeof d === 'string' ? d : d?.message || d?.error) || 'Failed to publish announcement.' });
     }
   };
 
